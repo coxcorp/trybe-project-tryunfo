@@ -24,7 +24,7 @@ class App extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
     this.setState({ [name]: value }, () => {
-// Requisito 05
+      // Requisito 05
       const {
         cardName,
         cardDescription,
