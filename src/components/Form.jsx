@@ -13,6 +13,7 @@ class Form extends React.Component {
       cardRare,
       cardTrunfo,
       onInputChange,
+      isSaveButtonDisabled,
     } = this.props;
     return (
       <section>
@@ -80,7 +81,7 @@ class Form extends React.Component {
             type="submit"
             name="saveButton"
             data-testid="save-button"
-            // disabled={ isSaveButtonDisabled }
+            disabled={ isSaveButtonDisabled }
             // onClick={ onSaveButtonClick }
           >
             Salvar
@@ -101,6 +102,7 @@ Form.propTypes = {
   cardRare: PropTypes.string.isRequired,
   cardTrunfo: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
+  isSaveButtonDisabled: PropTypes.bool.isRequired,
 };
 
 export default Form;
