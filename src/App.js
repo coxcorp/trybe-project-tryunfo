@@ -2,19 +2,25 @@ import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
 
+const blankState = {
+  cardName: '',
+  cardDescription: '',
+  cardAttr1: 0,
+  cardAttr2: 0,
+  cardAttr3: 0,
+  cardImage: '',
+  cardRare: 'normal',
+  cardTrunfo: false,
+  isSaveButtonDisabled: true,
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardName: '',
-      cardDescription: '',
-      cardAttr1: 0,
-      cardAttr2: 0,
-      cardAttr3: 0,
-      cardImage: '',
-      cardRare: 'normal',
-      cardTrunfo: false,
-      isSaveButtonDisabled: true,
+      ...blankState,
+      hasTrunfo: false,
+      cardList: [],
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
@@ -33,12 +39,16 @@ class App extends React.Component {
         cardAttr2,
         cardAttr3,
         cardImage,
+        hasTrunfo,
+        isSaveButtonDisabled,
       } = this.state;
       const minLimit = 0;
       const maxLimit = 90;
       const totalLimit = 210;
       if (cardName === ''
        || cardDescription === ''
+       || hasTrunfo === ''
+       || isSaveButtonDisabled === ''
        || Number(cardAttr1) < minLimit
        || Number(cardAttr1) > maxLimit
        || Number(cardAttr2) < minLimit
@@ -54,21 +64,41 @@ class App extends React.Component {
     });
   }
 
-  onSaveButtonClick() {
+  // Requisito 06
+  onSaveButtonClick = () => {
+    const {
+      cardName,
+      cardDescription,
+      cardImage,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardRare,
+      cardTrunfo,
+      cardList,
+    } = this.state;
+
+    const newCard = {
+      cardName,
+      cardDescription,
+      cardImage,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardRare,
+      cardTrunfo,
+    };
+
     this.setState({
-      cardName: '',
-      cardDescription: '',
-      cardAttr1: 0,
-      cardAttr2: 0,
-      cardAttr3: 0,
-      cardImage: '',
-      cardRare: 'normal',
-      cardTrunfo: false,
-      isSaveButtonDisabled: true,
+      ...blankState,
+      cardList: [...cardList, newCard],
+    }, () => {
+      if (cardTrunfo) this.setState({ hasTrunfo: true });
     });
   }
 
   render() {
+    const { cardList } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -77,7 +107,9 @@ class App extends React.Component {
           onInputChange={ this.onInputChange }
           onSaveButtonClick={ this.onSaveButtonClick }
         />
-        <Card { ...this.state } />
+        <div>
+          {cardList.map((card) => <Card key={ card.cardName } { ...card } />) }
+        </div>
       </div>
     );
   }
